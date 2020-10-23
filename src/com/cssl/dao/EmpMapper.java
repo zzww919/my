@@ -13,7 +13,7 @@ public interface EmpMapper {
 	public List<Emp> selectMap(Map<String, Object> map);
 	
 	
-	
+	//ĞŞ¸Ä
 	public int updateEmp(Emp emp);
 	
 	public int updateMap(Map<String, Object> map);
