@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cssl.dao.EmpMapper">
+  
+    <update id="updateEmp" parameterType="emp">
+    	update emp
+    	<set>
+    	 <if test="ename!=null and ename!=''">
+    	 	ename=#{ename},
+    	 </if>
+    	  <if test="hiredate!=null">
+    	    hiredate=#{hiredate},
+    	  </if>
+    	  <if test="sal!=null and sal!=0">
+    	    sal=#{sal}
+    	  </if>
+    	</set>
+    	where empno=#{empno}
+    </update>
+  <!-- <select id="selectBlog" resultType="Blog">
+    select * from Blog where id = #{id}
+  </select> -->
+  <select id="selectMap" resultType="emp">
+     select <include refid="clo"/> from emp 
+     <where>
+        <if test="empno!=null and empno=''">
+            empno=#{empno}
+        </if>
+     </where>
+  </select>
+  
+  <sql id="clo">
+     empno,ename,hiredate,sal
+  </sql>
+  
+  <select id="selectParam" resultType="Emp">
+     select <include refid="clo"/> from emp
+     <where>
+        <if test="empno!=null and empno!=''">
+          empno=#{eno}
+        </if>
+     </where>
+  </select>
+  
+  <update id="updateMap" parameterType="emp">
+   update emp
+     <set>
+        <if test="hiredate!=null">hiredate=#{hiredate},</if>
+     </set>
+     where empno=#{empno}
+  
+  </update>
+  
+   <update id="updateParam" parameterType="Emp">
+      update emp 
+      <set>
+        <if test="d!=null">hiredate=#{d},</if>
+      </set>
+       where empno=#{e}
+   </update>
+   
+   <delete id="deleteEmp" parameterType="Emp">
+     delete from emp
+     <where>
+      <choose>
+         <when test="empno!=null and empno!=''">
+            empno=#{empno}
+         </when>
+         <otherwise>
+           0=1
+         </otherwise>
+      </choose>
+     </where>
+   </delete>
+   
+   <select id="selectin" resultType="Emp">
+     select <include refid="clo"/> from emp
+     where empno in
+    	<foreach item="it"  collection="list"
+			open="(" separator="," close=")">
+			#{it}
+		</foreach>
+   </select>
+   
+   <delete id="deletein">
+     delete from emp 
+     where empno in
+    	<foreach item="it"  collection="list"
+			open="(" separator="," close=")">
+			#{it}
+		</foreach>
+   </delete>
+   
+   <select id="selectpx" resultType="emp">
+     select <include refid="clo"/> from emp
+    <if test="d != null and d != ''">
+			order by hiredate ${d}
+		</if>
+		 
+		 <if test="a != null and b != null">
+		 	limit #{a},#{b}
+		 </if>
+   </select>
+</mapper>
